@@ -3,8 +3,10 @@ PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin
 url=http://www.ontarioimmigration.ca/en/pnp/OI_PNPNEW.html
 tempdir=~/Library/Caches/scripts
 temp=$tempdir/pnp
+if [ ! -d "$tempdir" ];then
+    echo "Initialize Finish, Monitoring Start..."|terminal-notifier -title "Dont Panic"
 mkdir -p $tempdir
-
+fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 
