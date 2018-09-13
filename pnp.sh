@@ -5,10 +5,10 @@ tempdir=~/Library/Caches/scripts
 temp=$tempdir/pnp
 if [ ! -d "$tempdir" ];then
     echo "Initialize Finish, Monitoring Start..."|terminal-notifier -title "Dont Panic"
-mkdir -p $tempdir
+    mkdir -p $tempdir
 fi
 if [[ $(date +"%T") = "10:00"* ]];then
-    echo "I will always love you"
+    echo "I will always love you"|terminal-notifier -title "Don't Panic"
 fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
