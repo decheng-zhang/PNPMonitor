@@ -5,11 +5,14 @@ tempdir=~/Library/Caches/scripts
 temp=$tempdir/pnp
 mkdir -p $tempdir
 
-modified=$(phantomjs ./pnp.js|grep -A2 'success'|xargs echo)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+
+modified=$(phantomjs "$DIR/pnp.js"|grep -A2 'success'|xargs echo)
 if [[ -f "$temp" && "$modified" != "$(cat $temp)" && "$modified" != "" ]];then
     notimsg=$(cat $temp)"=>"${modified#???????????????}  
     echo $notimsg|terminal-notifier  -title 'Atten' -open $url
-    osascript ./email-notifier.scpt 
+    osascript "$DIR/email-notifier.scpt" 
 #else
    # echo $modified|terminal-notifier -title 'Calm Down' -open $url
 fi
