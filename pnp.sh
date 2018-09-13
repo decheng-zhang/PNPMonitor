@@ -7,6 +7,9 @@ if [ ! -d "$tempdir" ];then
     echo "Initialize Finish, Monitoring Start..."|terminal-notifier -title "Dont Panic"
 mkdir -p $tempdir
 fi
+if [[ $(date +"%T") = "10:00"* ]];then
+    echo "I will always love you"
+fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 
