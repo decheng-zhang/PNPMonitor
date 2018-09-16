@@ -1,2 +1,0 @@
-
-(crontab -l ; echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
