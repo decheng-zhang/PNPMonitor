@@ -17,6 +17,8 @@ EOF
 	echo "Failure no osascript"
     fi
 }
+quietMode(){
+}
 addingCachingFolder(){
      [ -d "$SCRIPT_FOLDER" ] || mkdir "$SCRIPT_FOLDER"
      cat <<'_EOF_'> $SCRIPT_FOLDER/pnp.sh 
@@ -57,7 +59,7 @@ fi
 
 _EOF_
 
-     
+chmod +x "$SCRIPT_FOLDER/pnp.sh"
 }
 addingCronJob(){
     (crontab -l ; echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
