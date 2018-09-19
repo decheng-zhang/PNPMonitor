@@ -9,18 +9,7 @@ printHelp() {
 }
 
 installThirdPartyBinary(){
-    brew install phantomjs || rc=$?
-    if [ -z $rc ];then
-	echo "Phantomjs Exist"
-    elif [ -z $rc ] || [ $rc -ne 0 ]; then
-	echo "Failure installing the phantomjs"
-    fi
-    brew install terminal-notifier || rc=$?
-    if [ -z $rc ];then
-	echo "terminal-notifier Exist"
-    elif [ -z $rc ] || [ $rc -ne 0 ]; then
-	echo "Failure installing the terminal-notifier"
-    fi
+    
     osascript <<EOF || rc=$?
 	 return "osascript Exist"
 EOF
