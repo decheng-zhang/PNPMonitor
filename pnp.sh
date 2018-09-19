@@ -12,7 +12,6 @@ if [[ $(date +"%T") = "10:00"* ]];then
 fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-
 modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNPNEW.html | egrep -o  -A2 '<p class=\"right\">.*$' | tr '\n' ' ' |sed 's/.*Last\ Modified: \(.*\)<.*>/\1/g')
 if [[ -f "$temp" && "$modified" != "$(cat $temp)" && "$modified" != "" ]];then
     notimsg=$(cat $temp)"=>"$modified  
