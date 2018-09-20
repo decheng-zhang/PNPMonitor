@@ -2,7 +2,7 @@
 #
 # Copyright Decheng Zhang
 #
-SCRIPT_FOLDER=~/.PNP.d.tmp
+SCRIPT_FOLDER=~/.PNP.d
 CACHE_FOLDER=~/Library/Caches/script
 printHelp() {
     echo ""
@@ -57,7 +57,7 @@ fi
 
 _EOF_
 
-     
+chmod +x $SCRIPT_FOLDER/pnp.sh 
 }
 addingCronJob(){
     (crontab -l ; echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
@@ -67,6 +67,6 @@ addingCronJob(){
 
 
 ##installThirdPartyBinary
-##addingCronJob
+addingCronJob
 addingCachingFolder
 
