@@ -2,7 +2,7 @@
 #
 # Copyright Decheng Zhang
 #
-SCRIPT_FOLDER=~/.PNP.d.tmp
+SCRIPT_FOLDER=~/.PNP.d
 CACHE_FOLDER=~/Library/Caches/script
 printHelp() {
     echo ""
@@ -17,10 +17,9 @@ EOF
 	echo "Failure no osascript"
     fi
 }
-quietMode(){
-}
 addingCachingFolder(){
-     [ -d "$SCRIPT_FOLDER" ] || mkdir "$SCRIPT_FOLDER"
+    [ -d "$SCRIPT_FOLDER" ] || mkdir "$SCRIPT_FOLDER"
+    [ -f "$CACHE_FOLDER/pnp" ] || touch $CACHE_FOLDER/pnp
      cat <<'_EOF_'> $SCRIPT_FOLDER/pnp.sh 
 #!/bin/bash
 PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -36,11 +35,27 @@ if [[ $(date +"%T") = "10:00"* ]];then
     echo "I will always love you"|terminal-notifier -title "Don't Panic"
 fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNPNEW.html | egrep -o  -A2 '<p class=\"right\">.*$' | tr '\n' ' ' |sed 's/.*Last\ Modified: \(.*\)<.*>/\1/g')
-if [[ -f "$temp" && "$modified" != "$(cat $temp)" && "$modified" != "" ]];then
-    notimsg=$(cat $temp)"=>"$modified  
+
+
+modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNP\
+NEW.html | md5) || rc=$?
+if [ ! -z $rc ];then
+    modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI\
+_PNPNEW.html | md5) || rc=$?
+    if [ ! -z $rc ]; then
+        echo "NETWORK CONNECTION ERROR" | terminal-notifier -title 'Atten'
+    fi
+fi
+
+if [[ -f "$temp" && "$modified" != "$(head -1 $temp)" && "$modified" != "" ]];t\
+hen
+    modifiedDate=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pn\
+p/OI_PNPNEW.html | egrep -o  -A2 '<p class=\"right\">.*$' | tr '\n' ' ' |sed 's\
+/.*Last\ Modified: \(.*\)<.*>/\1/g')
+    notimsg=$(sed '2q;d' $temp)"=>"$modifiedDate
     echo $notimsg|terminal-notifier  -title 'Atten' -open $url
-   
+    printf %s "$modified" > $temp
+    printf \\n%s "$modifiedDate" >> $temp
     osascript <<-EOF 
 tell application "Mail"
 	tell (make new outgoing message)
@@ -51,15 +66,11 @@ tell application "Mail"
 	end tell
 end tell
 EOF
-
-fi
-if [[ "$modified" != "" ]]; then
-printf %s "$modified" > $temp
 fi
 
 _EOF_
 
-chmod +x "$SCRIPT_FOLDER/pnp.sh"
+chmod +x $SCRIPT_FOLDER/pnp.sh 
 }
 addingCronJob(){
     (crontab -l ; echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
@@ -69,6 +80,6 @@ addingCronJob(){
 
 
 ##installThirdPartyBinary
-##addingCronJob
+addingCronJob
 addingCachingFolder
 
