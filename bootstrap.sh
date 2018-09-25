@@ -37,16 +37,15 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 
-modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNP\
-NEW.html | md5) || rc=$?
+modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNPNEW.html ) || rc=$?
 if [ ! -z $rc ];then
-    modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI\
-_PNPNEW.html | md5) || rc=$?
+    modified=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pnp/OI_PNPNEW.html ) || rc=$?
     if [ ! -z $rc ]; then
-        echo "NETWORK CONNECTION ERROR" | terminal-notifier -title 'Atten'
+	echo "NETWORK CONNECTION ERROR" | terminal-notifier -title 'Atten'
+	exit 1
     fi
 fi
-
+modified=$(echo "$modified" |md5)
 if [[ -f "$temp" && "$modified" != "$(head -1 $temp)" && "$modified" != "" ]];t\
 hen
     modifiedDate=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pn\
