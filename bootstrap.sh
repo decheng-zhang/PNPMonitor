@@ -45,7 +45,7 @@ if [ ! -z $rc ];then
 	exit 1
     fi
 fi
-modified=$(echo "$modified" |md5)
+modified=$(echo "$modified" | grep "$(date '+%B %-d, %Y')" | md5)
 if [[ -f "$temp" && "$modified" != "$(head -1 $temp)" && "$modified" != "" ]];t\
 hen
     modifiedDate=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pn\
