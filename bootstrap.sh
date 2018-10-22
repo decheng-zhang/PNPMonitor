@@ -3,7 +3,7 @@
 # Copyright Decheng Zhang
 #
 SCRIPT_FOLDER=~/.PNP.d
-CACHE_FOLDER=~/Library/Caches/script
+CACHE_FOLDER=~/Library/Caches/scripts
 printHelp() {
     echo ""
 }
@@ -49,8 +49,7 @@ modified=$(echo "$modified" | grep "$(date '+%B %-d, %Y')" | md5)
 if [[ -f "$temp" && "$modified" != "$(head -1 $temp)" && "$modified" != "" ]];t\
 hen
     modifiedDate=$(curl -s --compressed  http://www.ontarioimmigration.ca/en/pn\
-p/OI_PNPNEW.html | egrep -o  -A2 '<p class=\"right\">.*$' | tr '\n' ' ' |sed 's\
-/.*Last\ Modified: \(.*\)<.*>/\1/g')
+p/OI_PNPNEW.html|egrep -o -A2 '<p class=\"right\">.*$' | tr '\n' ' ' |sed 's/.*Last\ Modified: \(.*\)<.*>/\1/g')
     notimsg=$(sed '2q;d' $temp)"=>"$modifiedDate
     echo $notimsg|terminal-notifier  -title 'Atten' -open $url
     printf %s "$modified" > $temp
