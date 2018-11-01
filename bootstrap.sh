@@ -71,7 +71,11 @@ _EOF_
 chmod +x $SCRIPT_FOLDER/pnp.sh 
 }
 addingCronJob(){
-    (crontab -l ; echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
+    echo 'task before: ';
+    crontab -l 
+    (echo "*/3 10-17 * * 1-5 ~/.PNP.d/pnp.sh") | crontab -
+    echo 'task now: ';
+    crontab -l
 }
 
 
